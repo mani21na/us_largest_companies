@@ -127,9 +127,9 @@ class CLI
     puts "Assets:                   #{com.assets}" if com.assets != nil
     puts "Employees:                #{com.employees}" if com.employees != nil
     puts "Website:                  #{com.website}" if com.website != nil
-    puts "-------------Company Detail----------------------" if com.detail != "" && nil
+    puts "-------------Company Detail----------------------" if com.detail != nil && com.detail != ""
 
-    puts "#{com.detail}" if com.detail != nil && ""
+    puts "#{com.detail}" if com.detail != nil && com.detail != ""
     puts "--------------------------------------------------"
   end
 end
