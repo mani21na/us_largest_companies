@@ -1,28 +1,22 @@
 # UsLargestCompanies
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/us_largest_companies`. To experiment with that code, run `bin/console` for an interactive prompt.
+This is the TOP 10 of the largest United States corporations by total revenue for their respective fiscal years, based on The Fortune 500 that is an annual list compiled and published by Fortune magazine.
 
-TODO: Delete this and the text above, and describe your gem
+-Fiscal years : Enter what you want to see a year of ranks
+-TOP 10 companies : Enter what you want to see details of a company
+-Company's information
+
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
 gem 'us_largest_companies'
-```
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install us_largest_companies
 
 ## Usage
 
-TODO: Write usage instructions here
+Type the below and follow the on screen prompts.
+
+    $ us_largest_companies
 
 ## Development
 
