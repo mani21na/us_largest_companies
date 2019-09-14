@@ -26,6 +26,7 @@ class CLI
       print_company_info(input)
     else
       puts "You inputted an invalid rank. Please input a rank form 1 to 10."
+      Companies.all_delete
       exit
     end
 
