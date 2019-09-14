@@ -29,4 +29,9 @@ class Scraper
     end
     info_array
   end
+
+  def self.scrape_company_detail(url)
+    com_detail = Nokogiri::HTML(open(url))
+    com_detail.css("div.singleDescription__wrapper--3gwtb p").text
+  end
 end

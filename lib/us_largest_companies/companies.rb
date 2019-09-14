@@ -2,7 +2,7 @@ class Companies
   
   attr_accessor :year, :name, :previous_rank, :ceo, :rank, :profits, :assets, 
                 :url, :employees, :revenues, :website, :address, :revenue_percent_change, 
-                :profits_percent_change, :market_value
+                :profits_percent_change, :market_value, :detail
   
   @@all = []
 

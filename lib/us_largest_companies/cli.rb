@@ -10,13 +10,24 @@ class CLI
   def call
     puts "What year ranking would you like to see between #{print_years.last}-#{print_years.first}?"
     input = gets.strip
- 
-    print_companies(input)
+
+    if valid_year?(input)
+      print_companies(input)
+    else
+      puts "You inputted an invalid year. Please input a valid year from #{print_years.last} to #{print_years.first}."
+      exit
+    end
+
     puts ""
-    puts "What company would you like more information on?\n***Please type the rank of the company***"
+    puts "What company would you like more information on?\n***Please type the rank of the company***"    
     input = gets.strip
 
-    print_company_info(input)
+    if valid_rank?(input.to_i)
+      print_company_info(input)
+    else
+      puts "You inputted an invalid rank. Please input a rank form 1 to 10."
+      exit
+    end
 
     puts ""
     puts "Would you like to see another restaurant? Enter Y or N"
@@ -34,6 +45,22 @@ class CLI
       puts "I don't understand that answer."
       Companies.all_delete
       call
+    end 
+  end
+
+  def valid_year?(input)
+    if input =~ /[0-9][0-9][0-9][0-9]/ && print_years.include?(input)
+      return true
+    else
+      return false
+    end
+  end
+
+  def valid_rank?(input)
+    if input.between?(1,10)
+      return true
+    else
+      return false
     end
   end
 
@@ -61,7 +88,7 @@ class CLI
     top_10.each do |list|
       puts "#{list[:rank]}. #{list[:name]}"
     end
-    #binding.pry
+
     puts "----------------------------"
 
     Companies.new_from_index(top_10)
@@ -80,12 +107,12 @@ class CLI
       end
     end
     info_hash = Hash[*new_array]
-    binding.pry
 
-    com.set_info(info_hash)
+    info_hash["detail"] = Scraper.scrape_company_detail(com.url)
     
+    com.set_info(info_hash)
+
     puts "------------Company Info:#{com.year}-------------"
-    puts ""
     puts "Company:                  #{com.name}" if com.name != nil
     puts "Rank:                     #{com.rank}" if com.rank != nil
     puts "Previous Rank:            #{com.previous_rank}" if com.previous_rank != nil
@@ -99,8 +126,9 @@ class CLI
     puts "Assets:                   #{com.assets}" if com.assets != nil
     puts "Employees:                #{com.employees}" if com.employees != nil
     puts "Website:                  #{com.website}" if com.website != nil
-    puts ""
-    puts "-------------------------------------------------"
-    #binding.pry
+    puts "-------------Company Detail----------------------" if com.detail != "" && nil
+
+    puts "#{com.detail}" if com.detail != nil && ""
+    puts "--------------------------------------------------"
   end
 end
