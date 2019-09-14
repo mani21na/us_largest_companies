@@ -22,14 +22,11 @@ class Scraper
   end
 
   def self.scrape_companie_index(url)
-
+    com_info = Nokogiri::HTML(open(url))
+    info_array = []
+    com_info.css("div.highlightedStats__wrapper--VuLob span").each do |info|
+      info_array << info.text
+    end
+    info_array
   end
-
-=begin
-  def make_company(com_info_array)
-    com_info_array.each do |r|
-        WorldsBestRestaurants::Restaurant.new_from_index_page(r)
-      end
-  end
-=end
 end

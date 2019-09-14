@@ -17,6 +17,24 @@ class CLI
     input = gets.strip
 
     print_company_info(input)
+
+    puts ""
+    puts "Would you like to see another restaurant? Enter Y or N"
+    input = gets.strip.downcase
+    if input == "y"
+      Companies.all_delete
+      call
+    elsif input == "n"
+      puts ""
+      puts "Thank you!"
+      Companies.all_delete
+      exit
+    else
+      puts ""
+      puts "I don't understand that answer."
+      Companies.all_delete
+      call
+    end
   end
 
   def print_years
@@ -33,20 +51,56 @@ class CLI
       list = {}
       list[:rank] = company.css("span")[0].text
       list[:name] = company.css("span")[1].text
-      #list[:url] = company['href']
+      list[:url] = company['href']
+      list[:year] = input
       top_10 << list
     end
  
-    puts "THE TOP 10"
- 
+    puts "----------TOP 10------------"
+
     top_10.each do |list|
       puts "#{list[:rank]}. #{list[:name]}"
     end
+    #binding.pry
+    puts "----------------------------"
 
     Companies.new_from_index(top_10)
   end
 
   def print_company_info(input)
-    Companies.all
+    com = Companies.all.detect{|com| com.url if com.rank == input}
+    info_array = Scraper.scrape_companie_index(com.url)
+    new_array = []
+    info_array.collect do |x|
+      x = x.downcase.split.join('_')
+      if x.include?("market_value")
+        new_array << x.byteslice(0, 12)
+      else
+        new_array << x.gsub(/\_\(\$m\)/, "")
+      end
+    end
+    info_hash = Hash[*new_array]
+    binding.pry
+
+    com.set_info(info_hash)
+    
+    puts "------------Company Info:#{com.year}-------------"
+    puts ""
+    puts "Company:                  #{com.name}" if com.name != nil
+    puts "Rank:                     #{com.rank}" if com.rank != nil
+    puts "Previous Rank:            #{com.previous_rank}" if com.previous_rank != nil
+    puts "CEO:                      #{com.ceo.gsub(/\_/, " ")}" if com.ceo != nil
+    puts "address:                  #{com.address.gsub(/\_/, " ")}" if com.address != nil
+    puts "Revenues:                 #{com.revenues}" if com.revenues != nil
+    puts "Revenue Percent Change:   #{com.revenue_percent_change}" if com.revenue_percent_change != nil
+    puts "Market Value:             #{com.market_value}" if com.market_value != nil
+    puts "Profits:                  #{com.profits}" if com.profits != nil
+    puts "Profits Percent Change:   #{com.profits_percent_change}" if com.profits_percent_change != nil
+    puts "Assets:                   #{com.assets}" if com.assets != nil
+    puts "Employees:                #{com.employees}" if com.employees != nil
+    puts "Website:                  #{com.website}" if com.website != nil
+    puts ""
+    puts "-------------------------------------------------"
+    #binding.pry
   end
 end

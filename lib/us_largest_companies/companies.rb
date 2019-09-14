@@ -1,6 +1,8 @@
 class Companies
   
-  attr_accessor :year, :name, :position, :ceo, :rank, :industry, :hq_location, :url, :employees, :revenues
+  attr_accessor :year, :name, :previous_rank, :ceo, :rank, :profits, :assets, 
+                :url, :employees, :revenues, :website, :address, :revenue_percent_change, 
+                :profits_percent_change, :market_value
   
   @@all = []
 
@@ -11,10 +13,18 @@ class Companies
   
   def self.new_from_index(attributes_array)
     attributes_array.each{|company| self.new(company)}
-    binding.pry
   end
 
+  def set_info(attributes_hash)
+    attributes_hash.each{|key, value| self.send(("#{key}="), value)}
+    #binding.pry
+  end
+  
   def self.all
     @@all
+  end
+
+  def self.all_delete
+    @@all.clear
   end
 end
