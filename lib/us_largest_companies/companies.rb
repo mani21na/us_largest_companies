@@ -2,7 +2,7 @@ class Companies
   
   attr_accessor :year, :name, :previous_rank, :ceo, :rank, :profits, :assets, 
                 :url, :employees, :revenues, :website, :address, :revenue_percent_change, 
-                :profits_percent_change, :market_value, :detail
+                :profits_percent_change, :market_value, :detail, :morning_consult_brand_index
   
   @@all = []
 
@@ -16,7 +16,7 @@ class Companies
   end
 
   def set_info(attributes_hash)
-    attributes_hash.each{|key, value| self.send(("#{key}="), value)}
+     attributes_hash.each{|key, value| self.send(("#{key}="), value)}
     #binding.pry
   end
   

@@ -3,7 +3,7 @@ class CLI
   def run
     puts "Welcome to the TOP 10 largest US corporations from Fortune magazine"
     puts ""
-    
+    @scraper = Scraper.new
     call
   end
 
@@ -67,7 +67,7 @@ class CLI
 
   def print_years
     years = []
-    Scraper.scrape_year_index.each do |year|
+    @scraper.scrape_year_index.each do |year|
       years << year.text
     end
     years
@@ -75,7 +75,7 @@ class CLI
 
   def print_companies(input)
     top_10 = []
-    Scraper.get_top10_companies(input).each do |company|
+    @scraper.get_top10_companies(input).each do |company|
       list = {}
       list[:rank] = company.css("span")[0].text
       list[:name] = company.css("span")[1].text
@@ -97,7 +97,7 @@ class CLI
 
   def print_company_info(input)
     com = Companies.all.detect{|com| com.url if com.rank == input}
-    info_array = Scraper.scrape_companie_index(com.url)
+    info_array = @scraper.scrape_companie_index(com.url)
     new_array = []
     info_array.collect do |x|
       x = x.downcase.split.join('_')
@@ -109,7 +109,7 @@ class CLI
     end
     info_hash = Hash[*new_array]
 
-    info_hash["detail"] = Scraper.scrape_company_detail(com.url)
+    info_hash["detail"] = @scraper.scrape_company_detail(com.url)
     
     com.set_info(info_hash)
 
@@ -119,9 +119,9 @@ class CLI
     puts "Previous Rank:            #{com.previous_rank}" if com.previous_rank != nil
     puts "CEO:                      #{com.ceo.gsub(/\_/, " ")}" if com.ceo != nil
     puts "address:                  #{com.address.gsub(/\_/, " ")}" if com.address != nil
-    puts "Revenues:                 #{com.revenues}" if com.revenues != nil
+    puts "Revenues($M):             #{com.revenues}" if com.revenues != nil
     puts "Revenue Percent Change:   #{com.revenue_percent_change}" if com.revenue_percent_change != nil
-    puts "Market Value:             #{com.market_value}" if com.market_value != nil
+    puts "Market Value($M):         #{com.market_value}" if com.market_value != nil
     puts "Profits:                  #{com.profits}" if com.profits != nil
     puts "Profits Percent Change:   #{com.profits_percent_change}" if com.profits_percent_change != nil
     puts "Assets:                   #{com.assets}" if com.assets != nil
