@@ -1,5 +1,7 @@
 class CLI
 
+  attr_reader :scraper
+
   def run
     puts "Welcome to the TOP 10 largest US corporations from Fortune magazine"
     puts ""
@@ -15,7 +17,8 @@ class CLI
       print_companies(input)
     else
       puts "You inputted an invalid year. Please input a valid year from #{print_years.last} to #{print_years.first}."
-      exit
+      # recursion
+      call
     end
 
     puts ""
@@ -27,7 +30,8 @@ class CLI
     else
       puts "You inputted an invalid rank. Please input a rank form 1 to 10."
       Companies.all_delete
-      exit
+      # recursion
+      call
     end
 
     puts ""
@@ -35,6 +39,7 @@ class CLI
     input = gets.strip.downcase
     if input == "y"
       Companies.all_delete
+      # recursion
       call
     elsif input == "n"
       puts ""
@@ -58,7 +63,7 @@ class CLI
   end
 
   def valid_rank?(input)
-    if input.between?(1,10)
+    if input.between?(1, 10)
       return true
     else
       return false
