@@ -1,6 +1,6 @@
-class Companies
+class Company
   
-  attr_accessor :year, :name, :previous_rank, :ceo, :rank, :profits, :assets, 
+  attr_accessor :name, :previous_rank, :ceo, :rank, :profits, :assets,
                 :url, :employees, :revenues, :website, :address, :revenue_percent_change, 
                 :profits_percent_change, :market_value, :detail, :morning_consult_brand_index
   
@@ -11,20 +11,16 @@ class Companies
     @@all << self
   end
   
-  def self.new_from_index(attributes_array)
-    attributes_array.each{|company| self.new(company)}
+  def self.new_from_index(attributes_array, year)
+    y = Year.find_by_year(year)
+    attributes_array.each{|company| y.companies << self.new(company)}
   end
 
   def set_info(attributes_hash)
      attributes_hash.each{|key, value| self.send(("#{key}="), value)}
-    #binding.pry
-  end
-  
-  def self.all
-    @@all
   end
 
-  def self.all_delete
-    @@all.clear
+  def self.all
+    @@all
   end
 end
